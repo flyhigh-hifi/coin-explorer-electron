@@ -1,10 +1,11 @@
 // @flow
 import { combineReducers } from 'redux';
 import { routerReducer as router } from 'react-router-redux';
-import counter from './counter';
+
+import tokensList from './tokensList';
 
 const rootReducer = combineReducers({
-  counter,
+  tokensList,
   router
 });
 

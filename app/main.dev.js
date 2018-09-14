@@ -11,22 +11,22 @@
  * @flow
  */
 import { app, BrowserWindow } from 'electron';
+
 import MenuBuilder from './menu';
 
 let mainWindow = null;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
+
   sourceMapSupport.install();
 }
 
-if (
-  process.env.NODE_ENV === 'development' ||
-  process.env.DEBUG_PROD === 'true'
-) {
+if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
   require('electron-debug')();
   const path = require('path');
   const p = path.join(__dirname, '..', 'app', 'node_modules');
+
   require('module').globalPaths.push(p);
 }
 
@@ -53,10 +53,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', async () => {
-  if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.DEBUG_PROD === 'true'
-  ) {
+  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
     await installExtensions();
   }
 
@@ -74,6 +71,7 @@ app.on('ready', async () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
+
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
     } else {
@@ -87,5 +85,6 @@ app.on('ready', async () => {
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);
+
   menuBuilder.buildMenu();
 });

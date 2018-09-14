@@ -9,10 +9,7 @@ export default class MenuBuilder {
   }
 
   buildMenu() {
-    if (
-      process.env.NODE_ENV === 'development' ||
-      process.env.DEBUG_PROD === 'true'
-    ) {
+    if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
       this.setupDevelopmentEnvironment();
     }
 
@@ -22,6 +19,7 @@ export default class MenuBuilder {
         : this.buildDefaultTemplate();
 
     const menu = Menu.buildFromTemplate(template);
+
     Menu.setApplicationMenu(menu);
 
     return menu;
@@ -181,6 +179,40 @@ export default class MenuBuilder {
   }
 
   buildDefaultTemplate() {
+    const devSubMenu = [
+      {
+        label: '&Reload',
+        accelerator: 'Ctrl+R',
+        click: () => {
+          this.mainWindow.webContents.reload();
+        }
+      },
+      {
+        label: 'Toggle &Full Screen',
+        accelerator: 'F11',
+        click: () => {
+          this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
+        }
+      },
+      {
+        label: 'Toggle &Developer Tools',
+        accelerator: 'Alt+Ctrl+I',
+        click: () => {
+          this.mainWindow.toggleDevTools();
+        }
+      }
+    ];
+
+    const prodSubMenu = [
+      {
+        label: 'Toggle &Full Screen',
+        accelerator: 'F11',
+        click: () => {
+          this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
+        }
+      }
+    ];
+
     const templateDefault = [
       {
         label: '&File',
@@ -200,44 +232,7 @@ export default class MenuBuilder {
       },
       {
         label: '&View',
-        submenu:
-          process.env.NODE_ENV === 'development'
-            ? [
-                {
-                  label: '&Reload',
-                  accelerator: 'Ctrl+R',
-                  click: () => {
-                    this.mainWindow.webContents.reload();
-                  }
-                },
-                {
-                  label: 'Toggle &Full Screen',
-                  accelerator: 'F11',
-                  click: () => {
-                    this.mainWindow.setFullScreen(
-                      !this.mainWindow.isFullScreen()
-                    );
-                  }
-                },
-                {
-                  label: 'Toggle &Developer Tools',
-                  accelerator: 'Alt+Ctrl+I',
-                  click: () => {
-                    this.mainWindow.toggleDevTools();
-                  }
-                }
-              ]
-            : [
-                {
-                  label: 'Toggle &Full Screen',
-                  accelerator: 'F11',
-                  click: () => {
-                    this.mainWindow.setFullScreen(
-                      !this.mainWindow.isFullScreen()
-                    );
-                  }
-                }
-              ]
+        submenu: process.env.NODE_ENV === 'development' ? devSubMenu : prodSubMenu
       },
       {
         label: 'Help',
