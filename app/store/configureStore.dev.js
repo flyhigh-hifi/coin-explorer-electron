@@ -3,13 +3,14 @@ import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'react-router-redux';
 import { createLogger } from 'redux-logger';
+
 import rootReducer from '../reducers';
-import * as counterActions from '../actions/counter';
-import type { counterStateType } from '../reducers/types';
+import * as tokensListActions from '../actions/tokensList';
+import type { tokensListStateType } from '../reducers/types';
 
 const history = createHashHistory();
 
-const configureStore = (initialState?: counterStateType) => {
+const configureStore = (initialState?: tokensListStateType) => {
   // Redux Configuration
   const middleware = [];
   const enhancers = [];
@@ -30,20 +31,18 @@ const configureStore = (initialState?: counterStateType) => {
 
   // Router Middleware
   const router = routerMiddleware(history);
+
   middleware.push(router);
 
   // Redux DevTools Configuration
   const actionCreators = {
-    ...counterActions,
+    ...tokensListActions,
     ...routerActions
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
   /* eslint-disable no-underscore-dangle */
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        // Options: http://extension.remotedev.io/docs/API/Arguments.html
-        actionCreators
-      })
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ actionCreators })
     : compose;
   /* eslint-enable no-underscore-dangle */
 
