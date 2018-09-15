@@ -8,7 +8,7 @@ import type { Tokens } from '../reducers/types';
 import styles from './TokensList.css';
 
 type Props = {
-  getTokenAverageRate: string => void,
+  getTokenRates: string => void,
   getTokens: () => void,
   tokens: Tokens,
   tokenAverageLoading: boolean,
@@ -27,7 +27,7 @@ export default class TokensList extends Component<Props> {
 
   render() {
     const {
-      getTokenAverageRate,
+      getTokenRates,
       tokens,
       tokenAverageLoading,
       tokenAverageError,
@@ -52,15 +52,28 @@ export default class TokensList extends Component<Props> {
         <div className={styles.tokenList}>
           {tokens.valueSeq().map(token => (
             <div className={styles.token}>
-              <h4 className={styles.label}>
-                {token.name} {token.rate && token.rate}
-              </h4>
-              <button
-                className={styles.btn}
-                onClick={() => getTokenAverageRate(token.address)}
-                type="button">
-                Get rate
-              </button>
+              <div className={styles.tokenHeader}>
+                <div>
+                  <h4 className={styles.label}>{token.name}</h4>
+                  <h2 className={styles.label}>
+                    (ethplorer price: {token.price.rate}) {token.rate && token.rate}
+                  </h2>
+                </div>
+                <button
+                  className={styles.btn}
+                  onClick={() => getTokenRates(token.address)}
+                  type="button">
+                  Get rate
+                </button>
+              </div>
+              <div>
+                {token.rates.external.map(rate => (
+                  <div>
+                    {rate.source} {rate.value}
+                  </div>
+                ))}
+                {!!token.rates.average && <div>average {token.rates.average}</div>}
+              </div>
             </div>
           ))}
         </div>

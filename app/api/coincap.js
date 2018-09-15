@@ -1,4 +1,5 @@
 const apiEnpoint = 'http://coincap.io';
+const source = 'coincap.io';
 
 module.exports = {
   getTokenRate: tokenName =>
@@ -7,7 +8,13 @@ module.exports = {
       .then(priceInfo => {
         if (!priceInfo.price_usd) throw new Error();
 
-        return parseFloat(priceInfo.price_usd);
+        return {
+          source,
+          value: parseFloat(priceInfo.price_usd)
+        };
       })
-      .catch(() => 0)
+      .catch(() => ({
+        source,
+        value: 0
+      }))
 };

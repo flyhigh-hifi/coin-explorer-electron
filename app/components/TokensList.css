@@ -20,6 +20,12 @@
 
 .token {
   margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tokenHeader {
+  flex: 1;
   flex-direction: row;
   display: flex;
   justify-content: space-between;
@@ -31,6 +37,10 @@
   font-size: 18px;
   line-height: 20px;
   margin: 0;
+}
+
+.label {
+  color: darkgrey;
 }
 
 .error {
