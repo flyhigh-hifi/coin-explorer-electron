@@ -14,5 +14,10 @@
     "postinstall": "yarn electron-rebuild"
   },
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "autobind-decorator": "^2.1.0",
+    "immutable": "^3.8.2",
+    "styled-components": "^3.4.6"
+  },
+  "devDependencies": {}
 }
