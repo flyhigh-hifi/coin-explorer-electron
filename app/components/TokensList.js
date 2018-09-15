@@ -14,7 +14,7 @@ type Props = {
   tokenAverageLoading: boolean,
   tokenAverageError: boolean,
   tokensLoading: boolean,
-  chahgeFilter: value => void
+  chahgeFilter: string => void
 };
 
 export default class TokensList extends Component<Props> {
