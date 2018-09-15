@@ -13,7 +13,8 @@ type Props = {
   tokens: Tokens,
   tokenAverageLoading: boolean,
   tokenAverageError: boolean,
-  tokensLoading: boolean
+  tokensLoading: boolean,
+  chahgeFilter: value => void
 };
 
 export default class TokensList extends Component<Props> {
@@ -31,7 +32,8 @@ export default class TokensList extends Component<Props> {
       tokens,
       tokenAverageLoading,
       tokenAverageError,
-      tokensLoading
+      tokensLoading,
+      chahgeFilter
     } = this.props;
 
     if (tokensLoading) {
@@ -46,8 +48,17 @@ export default class TokensList extends Component<Props> {
               <i className="fa fa-arrow-left fa-2x" />
             </Link>
           </div>
-          {tokenAverageLoading && <h3 className={styles.loadingStatus}>Loading..</h3>}
-          {tokenAverageError && <h3 className={styles.error}>Error!</h3>}
+          <div className={styles.filterContainer}>
+            <input
+              placeholder="Filter..."
+              className={styles.filter}
+              onChange={e => chahgeFilter(e.target.value.toLowerCase())}
+            />
+          </div>
+          <div className={styles.statusContainer}>
+            {tokenAverageLoading && <h3 className={styles.loadingStatus}>Loading..</h3>}
+            {tokenAverageError && <h3 className={styles.error}>Error!</h3>}
+          </div>
         </div>
         <div className={styles.tokenList}>
           {tokens.valueSeq().map(token => (
@@ -58,6 +69,7 @@ export default class TokensList extends Component<Props> {
                   <h2 className={styles.label}>
                     (ethplorer price: {token.price.rate}) {token.rate && token.rate}
                   </h2>
+                  <h5 className={styles.address}>{token.address && token.address}</h5>
                 </div>
                 <button
                   className={styles.btn}

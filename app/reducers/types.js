@@ -9,6 +9,10 @@ export type TokensListStateType = {
   +tokenAverageError: boolean
 };
 
+export type FilterStateType = {
+  +filterValue: string
+};
+
 export type Token = {
   +name: string,
   +address: string,
