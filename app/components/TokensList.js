@@ -7,14 +7,14 @@ import routes from '../constants/routes.json';
 import styles from './TokensList.css';
 
 type Props = {
-  getTokens: () => void
+  getTokenAverageRate: string => void
 };
 
 export default class TokensList extends Component<Props> {
   props: Props;
 
   render() {
-    const { getTokens } = this.props;
+    const { getTokenAverageRate } = this.props;
 
     return (
       <div>
@@ -26,7 +26,9 @@ export default class TokensList extends Component<Props> {
         <div className={styles.btnGroup}>
           <button
             className={styles.btn}
-            onClick={getTokens}
+            onClick={() =>
+              getTokenAverageRate('0xff71cb760666ab06aa73f34995b42dd4b85ea07b')
+            }
             data-tclass="btn"
             type="button">
             odd
