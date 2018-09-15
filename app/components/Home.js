@@ -14,8 +14,8 @@ export default class Home extends Component<Props> {
   render() {
     return (
       <div className={styles.container}>
-        <h2>Home</h2>
-        <Link to={routes.TOKENS_LIST}>to TokensList</Link>
+        <h2>Token info</h2>
+        <Link to={routes.TOKENS_LIST}>link to the Tokens List</Link>
       </div>
     );
   }
