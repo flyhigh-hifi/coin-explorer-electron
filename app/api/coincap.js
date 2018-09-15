@@ -7,7 +7,7 @@ module.exports = {
       .then(priceInfo => {
         if (!priceInfo.price_usd) throw new Error();
 
-        return priceInfo.price_usd;
+        return parseFloat(priceInfo.price_usd);
       })
       .catch(() => 0)
 };

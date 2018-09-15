@@ -1,9 +1,12 @@
 import type { Dispatch as ReduxDispatch, Store as ReduxStore } from 'redux';
+import { Map } from 'immutable';
 
 export type TokensListStateType = {
-  tokens: Map<string, Token>,
+  +tokens: Map<string, Token>,
   +tokensLoading: boolean,
-  +tokensError: boolean
+  +tokensError: boolean,
+  +tokenAverageLoading: boolean,
+  +tokenAverageError: boolean
 };
 
 export type Token = {
@@ -12,11 +15,13 @@ export type Token = {
   +rate: string
 };
 
+export type Tokens = Map<string, Token>;
+
 export type Action = {
   +type: string
 };
 
-export type GetState = () => tokensListStateType;
+export type GetState = () => TokensListStateType;
 
 export type Dispatch = ReduxDispatch<Action>;
 

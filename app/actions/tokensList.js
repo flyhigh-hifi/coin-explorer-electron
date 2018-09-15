@@ -53,11 +53,11 @@ export function getTokenAverageRate(tokenAddress: string) {
       cryptocompareApi.getTokenRate(tokenName)
     ])
       .then(apiRates => {
-        const rates = [...apiRates, ethplorerPrice.rate];
+        const rates = [...apiRates, parseFloat(ethplorerPrice.rate)];
 
         return dispatch({
           type: GET_TOKEN_AVERAGE_RATE_SUCCESS,
-          payload: { averageRate: getAverageRate(rates) }
+          payload: { tokenName, rate: getAverageRate(rates) }
         });
       })
       .catch(error => {
