@@ -1,7 +1,15 @@
 import type { Dispatch as ReduxDispatch, Store as ReduxStore } from 'redux';
 
-export type tokensListStateType = {
-  +tokensList: number
+export type TokensListStateType = {
+  tokens: Map<string, Token>,
+  +tokensLoading: boolean,
+  +tokensError: boolean
+};
+
+export type Token = {
+  +name: string,
+  +address: string,
+  +rate: string
 };
 
 export type Action = {
