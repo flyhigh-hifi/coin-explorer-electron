@@ -6,7 +6,10 @@ import * as TokensListActions from '../actions/tokensList';
 
 function mapStateToProps(state) {
   return {
-    tokens: state.tokensList.tokens
+    tokens: state.tokensList.tokens,
+    tokenAverageLoading: state.tokensList.tokenAverageLoading,
+    tokenAverageError: state.tokensList.tokenAverageError,
+    tokensLoading: state.tokensList.tokensLoading
   };
 }
 
