@@ -1,4 +1,5 @@
 const apiEnpoint = 'https://min-api.cryptocompare.com';
+const source = 'cryptocompare.com';
 
 module.exports = {
   getTokenRate: tokenName =>
@@ -7,7 +8,13 @@ module.exports = {
       .then(priceInfo => {
         if (!priceInfo.USD) throw new Error();
 
-        return parseFloat(priceInfo.USD);
+        return {
+          source,
+          value: parseFloat(priceInfo.USD)
+        };
       })
-      .catch(() => 0)
+      .catch(() => ({
+        source,
+        value: 0
+      }))
 };

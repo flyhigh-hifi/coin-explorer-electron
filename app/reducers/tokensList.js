@@ -30,7 +30,12 @@ export default function tokensList(
     case GET_TOKENS_SUCCESS:
       return {
         ...state,
-        tokens: Map(action.payload.tokens.map(token => [token.name, token])),
+        tokens: Map(
+          action.payload.tokens.map(token => [
+            token.symbol,
+            { ...token, rates: { external: [], average: 0 } }
+          ])
+        ),
         tokensLoading: false,
         tokensError: false
       };
@@ -43,7 +48,7 @@ export default function tokensList(
         ...state,
         tokens: state.tokens.set(action.payload.tokenName, {
           ...state.tokens.get(action.payload.tokenName),
-          rate: action.payload.rate
+          rates: action.payload.rates
         }),
         tokenAverageLoading: false,
         tokenAverageError: false

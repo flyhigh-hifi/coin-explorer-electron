@@ -8,12 +8,13 @@ import type { Tokens } from '../reducers/types';
 import styles from './TokensList.css';
 
 type Props = {
-  getTokenAverageRate: string => void,
+  getTokenRates: string => void,
   getTokens: () => void,
   tokens: Tokens,
   tokenAverageLoading: boolean,
   tokenAverageError: boolean,
-  tokensLoading: boolean
+  tokensLoading: boolean,
+  chahgeFilter: string => void
 };
 
 export default class TokensList extends Component<Props> {
@@ -27,11 +28,12 @@ export default class TokensList extends Component<Props> {
 
   render() {
     const {
-      getTokenAverageRate,
+      getTokenRates,
       tokens,
       tokenAverageLoading,
       tokenAverageError,
-      tokensLoading
+      tokensLoading,
+      chahgeFilter
     } = this.props;
 
     if (tokensLoading) {
@@ -46,21 +48,44 @@ export default class TokensList extends Component<Props> {
               <i className="fa fa-arrow-left fa-2x" />
             </Link>
           </div>
-          {tokenAverageLoading && <h3 className={styles.loadingStatus}>Loading..</h3>}
-          {tokenAverageError && <h3 className={styles.error}>Error!</h3>}
+          <div className={styles.filterContainer}>
+            <input
+              placeholder="Filter..."
+              className={styles.filter}
+              onChange={e => chahgeFilter(e.target.value.toLowerCase())}
+            />
+          </div>
+          <div className={styles.statusContainer}>
+            {tokenAverageLoading && <h3 className={styles.loadingStatus}>Loading..</h3>}
+            {tokenAverageError && <h3 className={styles.error}>Error!</h3>}
+          </div>
         </div>
         <div className={styles.tokenList}>
           {tokens.valueSeq().map(token => (
             <div className={styles.token}>
-              <h4 className={styles.label}>
-                {token.name} {token.rate && token.rate}
-              </h4>
-              <button
-                className={styles.btn}
-                onClick={() => getTokenAverageRate(token.address)}
-                type="button">
-                Get rate
-              </button>
+              <div className={styles.tokenHeader}>
+                <div>
+                  <h4 className={styles.label}>{token.name}</h4>
+                  <h2 className={styles.label}>
+                    (ethplorer price: {token.price.rate}) {token.rate && token.rate}
+                  </h2>
+                  <h5 className={styles.address}>{token.address && token.address}</h5>
+                </div>
+                <button
+                  className={styles.btn}
+                  onClick={() => getTokenRates(token.address)}
+                  type="button">
+                  Get rate
+                </button>
+              </div>
+              <div>
+                {token.rates.external.map(rate => (
+                  <div>
+                    {rate.source} {rate.value}
+                  </div>
+                ))}
+                {!!token.rates.average && <div>average {token.rates.average}</div>}
+              </div>
             </div>
           ))}
         </div>

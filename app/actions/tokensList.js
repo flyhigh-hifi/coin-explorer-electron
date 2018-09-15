@@ -15,7 +15,9 @@ export const GET_TOKEN_AVERAGE_RATE_FAIL = 'GET_TOKEN_AVERAGE_RATE_FAIL';
 const getAverageRate = (rates: Array<number>) => {
   const availableRates = rates.filter(rate => rate > 0);
 
-  return availableRates.reduce((prev, curr) => prev + curr) / availableRates.length;
+  return (
+    availableRates.reduce((prev, curr) => prev + curr) / (availableRates.length || 1)
+  );
 };
 
 export function getTokens() {
@@ -38,14 +40,11 @@ export function getTokens() {
   };
 }
 
-export function getTokenAverageRate(tokenAddress: string) {
+export function getTokenRates(tokenAddress: string) {
   return async (dispatch: Dispatch) => {
     dispatch({ type: GET_TOKEN_AVERAGE_RATE });
 
-    const {
-      name: tokenName,
-      price: ethplorerPrice
-    } = await ethplorerApi.getTokenByAddress(tokenAddress);
+    const { symbol: tokenName } = await ethplorerApi.getTokenByAddress(tokenAddress);
 
     Promise.all([
       cryptonator.getTokenRate(tokenName),
@@ -53,13 +52,18 @@ export function getTokenAverageRate(tokenAddress: string) {
       cryptocompareApi.getTokenRate(tokenName)
     ])
       .then(apiRates => {
-        const rates = [...apiRates, parseFloat(ethplorerPrice.rate)];
+        const ratesValues = apiRates.map(rate => rate.value);
+        const rates = {
+          external: apiRates,
+          average: getAverageRate(ratesValues)
+        };
 
         return dispatch({
           type: GET_TOKEN_AVERAGE_RATE_SUCCESS,
-          payload: { tokenName, rate: getAverageRate(rates) }
+          payload: { tokenName, rates }
         });
       })
+
       .catch(error => {
         dispatch({
           type: GET_TOKEN_AVERAGE_RATE_FAIL,
