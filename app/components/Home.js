@@ -13,7 +13,7 @@ export default class Home extends Component<Props> {
 
   render() {
     return (
-      <div className={styles.container} data-tid="container">
+      <div className={styles.container}>
         <h2>Home</h2>
         <Link to={routes.TOKENS_LIST}>to TokensList</Link>
       </div>
